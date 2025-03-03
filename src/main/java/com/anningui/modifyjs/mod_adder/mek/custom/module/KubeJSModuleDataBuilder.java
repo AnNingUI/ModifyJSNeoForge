@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.*;
 
-import static com.anningui.modifyjs.mod_adder.mek.util.KubeJSMekUntiItemUtils.getItemById;
+import static com.anningui.modifyjs.util.MJSUtils.getItemById;
 
 public class KubeJSModuleDataBuilder extends BuilderBase<ModuleData<KubeJSModuleData>> {
     public UnitItemSlots.Slots slot;

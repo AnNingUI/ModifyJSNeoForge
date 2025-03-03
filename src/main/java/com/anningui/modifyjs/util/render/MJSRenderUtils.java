@@ -31,7 +31,6 @@ public class MJSRenderUtils {
     @link <a href="https://www.bilibili.com/video/BV1t1AUe7ErD?vd_source=a6e9e72f334103d28476ce3f30850f61">...</a>
     """)
     public static void renderModelLists(
-            ItemRenderer itemRenderer,
             BakedModel model,
             ItemStack stack,
             PoseStack poseStack,
@@ -39,6 +38,8 @@ public class MJSRenderUtils {
             int packedLight,
             int packedOverlay
     ) {
+        Minecraft mc = Minecraft.getInstance();
+        ItemRenderer itemRenderer = mc.getItemRenderer();
         for (BakedModel bakedModel : model.getRenderPasses(stack, true)) {
             for (RenderType renderType : model.getRenderTypes(stack, true)) {
                 VertexConsumer vertexConsumer;
@@ -148,7 +149,7 @@ public class MJSRenderUtils {
 
     public static BakedModel getModel(ResourceLocation idPath) {
         Minecraft mc = Minecraft.getInstance();
-        return mc.getModelManager().getModel(new ModelResourceLocation(idPath, "inventory"));
+        return mc.getModelManager().getModel(new ModelResourceLocation(idPath, "standalone"));
     }
 
     public static BakedModel getModel(ResourceLocation idPath, String variant) {

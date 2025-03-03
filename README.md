@@ -10,13 +10,15 @@
 This is a simple mod that initially started as an addition for some features not implemented by the KJS community. It currently implements some basic item rendering, which can be considered a simple extension to[RenderJS](https://github.com/ch1335/RenderJS). And an Item type that can be used to create [MEK Module Item](https://wiki.aidancbrady.com/wiki/Modules)
 
 ### TODE LIST
-- [ ] Currently only the support for item renderByItem has been added
+- [x] Add support for customized rendering of `Item`
 - [x] Add an Item type that can be used to create [MEK Module Item](https://wiki.aidancbrady.com/wiki/Modules)
+- [x] Add registration of additional models
 - [ ] ...(still being improved)
 
 ### Attention
 <span style="color: red;">
-This mod overrides the <code style="color: red; font-size: 16px">createObject</code> method of <code style="color: red; font-size: 16px">BlockItemBuilder</code>, which may cause issues during block registration.</span>
+This version has been modified a lot from its predecessor, the rendering part has been moved from the item registration part to the use of event registration, as you can see in the example.
+</span>
 
 ## Example:
 Look [This](./example/)

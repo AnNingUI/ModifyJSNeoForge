@@ -14,10 +14,6 @@ public class KubeJSMekUntiItemUtils {
         return MekanismAPI.MODULE_REGISTRY.get(id);
     }
 //
-    public static Item getItemById(ResourceLocation id) {
-        return BuiltInRegistries.ITEM.get(id);
-    }
-//
     public static List<ModuleData<?>> getAllModule() {
         return MekanismAPI.MODULE_REGISTRY.stream().toList();
     }
