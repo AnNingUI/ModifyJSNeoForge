@@ -5,6 +5,7 @@ const $Axis = Java.loadClass("com.mojang.math.Axis");
 
 
 StartupEvents.registry("item", event => {
+                                        // If Error Please use animal_armor
     event.create("example_horse_armor", "kubejs:animal_armor")
         .bodyType("equestrian").overlay(true)
 })
