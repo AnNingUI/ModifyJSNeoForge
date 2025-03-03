@@ -22,7 +22,7 @@ public class MJSMekKubeJSPlugin implements KubeJSPlugin {
     public void registerBuilderTypes(BuilderTypeRegistry registry) {
         if (mekAdderIsOk) {
             registry.of(Registries.ITEM, res -> {
-               res.add(mjs$id("mek_unit"), KubeJSUnitItemBuilder.class, KubeJSUnitItemBuilder::new);
+               res.add(mjs$id("mek_unit").toString(), KubeJSUnitItemBuilder.class, KubeJSUnitItemBuilder::new);
             });
         }
     }

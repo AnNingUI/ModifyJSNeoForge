@@ -168,7 +168,7 @@ dependencies {
     compileOnly("dev.architectury:architectury-neoforge:$architectury_version")
 
     // Supported mods
-    implementation "blank:ProbeJS-7.7.2"
+//    implementation "blank:ProbeJS-7.7.2"
     implementation "mekanism:Mekanism:1.21.1-${mekanism_version}"
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
