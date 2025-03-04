@@ -4,6 +4,9 @@ import com.anningui.modifyjs.util.RayTraceResultMJS;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.latvian.mods.kubejs.typings.Info;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -26,6 +29,8 @@ import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class MJSRenderUtils {
+    private static final Minecraft mc = Minecraft.getInstance();
+
     @Info("""
     @author Flander923\n
     @link <a href="https://www.bilibili.com/video/BV1t1AUe7ErD?vd_source=a6e9e72f334103d28476ce3f30850f61">...</a>
@@ -38,7 +43,6 @@ public class MJSRenderUtils {
             int packedLight,
             int packedOverlay
     ) {
-        Minecraft mc = Minecraft.getInstance();
         ItemRenderer itemRenderer = mc.getItemRenderer();
         for (BakedModel bakedModel : model.getRenderPasses(stack, true)) {
             for (RenderType renderType : model.getRenderTypes(stack, true)) {
@@ -75,7 +79,6 @@ public class MJSRenderUtils {
             int light,
             int packedOverlay
     ) {
-        Minecraft mc = Minecraft.getInstance();
         mc.getTextureManager().bindForSetup(InventoryMenu.BLOCK_ATLAS);
         VertexConsumer builder = bufferSource.getBuffer(RenderType.translucent());
         TextureAtlasSprite sprite =
@@ -148,13 +151,19 @@ public class MJSRenderUtils {
     }
 
     public static BakedModel getModel(ResourceLocation idPath) {
-        Minecraft mc = Minecraft.getInstance();
         return mc.getModelManager().getModel(new ModelResourceLocation(idPath, "standalone"));
     }
 
     public static BakedModel getModel(ResourceLocation idPath, String variant) {
-        Minecraft mc = Minecraft.getInstance();
         return mc.getModelManager().getModel(new ModelResourceLocation(idPath, variant));
+    }
+
+    public static HumanoidModel<AbstractClientPlayer> getPlayerModel(AbstractClientPlayer player) {
+        if (player != null) {
+            var renderer = mc.getEntityRenderDispatcher().getRenderer(player);
+            return ((PlayerRenderer) renderer).getModel();
+        }
+        return null;
     }
 
     public static void renderEntityLineIn3D(

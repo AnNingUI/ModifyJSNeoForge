@@ -1,7 +1,6 @@
 package com.anningui.modifyjs.mod_adder.mek.custom.module;
 
 import com.anningui.modifyjs.callback.CustomInterface;
-import com.anningui.modifyjs.util.js_long.TryCatchPipe;
 import com.mojang.logging.LogUtils;
 import mekanism.api.annotations.ParametersAreNotNullByDefault;
 import mekanism.api.gear.*;
@@ -23,8 +22,9 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 
+import static com.anningui.modifyjs.util.js_long.TryCatchPipe.tryCatchBBR;
+import static com.anningui.modifyjs.util.js_long.TryCatchPipe.tryCatchBBV;
 import static java.util.Objects.isNull;
 
 @ParametersAreNotNullByDefault
@@ -209,19 +209,5 @@ public class KubeJSModuleData implements ICustomModule<KubeJSModuleData> {
         );
     }
 
-    private void tryCatchBBV(boolean b, Runnable successAction, Runnable superAction) {
-        if (b) {
-            TryCatchPipe.pipeWithVoid(successAction, (e) -> superAction.run()).run();
-        } else {
-            superAction.run();
-        }
-    }
 
-    private <T> T tryCatchBBR(boolean b, Function<Void, T> successAction, Function<Exception, T> superAction) {
-        if (b) {
-            return (T) TryCatchPipe.pipeWithReturnValue(successAction, superAction).run();
-        } else {
-            return superAction.apply(null);
-        }
-    }
 }
