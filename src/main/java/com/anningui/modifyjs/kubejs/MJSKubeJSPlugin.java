@@ -10,6 +10,8 @@ import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
 import dev.latvian.mods.kubejs.script.BindingRegistry;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.InteractionResult;
+import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 
 public class MJSKubeJSPlugin implements KubeJSPlugin {
     @Override
@@ -25,5 +27,11 @@ public class MJSKubeJSPlugin implements KubeJSPlugin {
         bindings.add("MJSUtils", MJSUtils.class);
         bindings.add("ModelResourceLocation", ModelResourceLocation.class);
         bindings.add("InteractionResult", InteractionResult.class);
+        if (bindings.type().isClient()) {
+            bindings.add("RenderPlayerEvent$Pre", RenderPlayerEvent.Pre.class);
+            bindings.add("RenderPlayerEvent$Post", RenderPlayerEvent.Post.class);
+            bindings.add("RenderLivingEntityEvent$Pre", RenderLivingEvent.Post.class);
+            bindings.add("RenderLivingEntityEvent$Post", RenderLivingEvent.Post.class);
+        }
     }
 }
