@@ -15,9 +15,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-
-import static com.anningui.modifyjs.callback.MixinStron.noShowModelMap;
 import static com.anningui.modifyjs.event.register.ArmorLayerRegister.allArmorLayers;
 
 @OnlyIn(Dist.CLIENT)
@@ -25,7 +22,6 @@ public class MJSHumanoidArmorLayer<T extends LivingEntity, M extends HumanoidMod
 
     public MJSHumanoidArmorLayer(RenderLayerParent<T, M> renderer, A innerModel, A outerModel, ModelManager modelManager) {
         super(renderer, innerModel, outerModel, modelManager);
-        System.out.println("MJSHumanoidArmorLayer init" + noShowModelMap);
     }
 
     @Override

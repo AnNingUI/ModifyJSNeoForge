@@ -66,7 +66,7 @@ public abstract class HorseArmorLayerMixin extends RenderLayer<Horse, HorseModel
                 i = -1;
             }
             ResourceLocation texture;
-            if (noShowModelMap.containsKey(animalarmoritem)) {
+            if (noShowModelMap.containsKey(animalarmoritem) && noShowModelMap.get(animalarmoritem)) {
                 texture = ResourceLocation.parse(MOD_ID + ":textures/entity/horse/armor/horse_armor_no_render.png");
             } else {
                 texture = animalarmoritem.getTexture();

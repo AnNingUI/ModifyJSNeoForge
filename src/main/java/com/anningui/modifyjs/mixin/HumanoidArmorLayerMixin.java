@@ -71,11 +71,11 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 
     @Inject(method = "setPartVisibility", at = @At(value = "TAIL"))
     private void setPartVisibility(A model, EquipmentSlot slot, CallbackInfo ci) {
-        noShowModelMap.keySet().forEach(item -> {
+        noShowModelMap.forEach((item, isNoShow) -> {
             if (item instanceof ArmorItem armorItem) {
                 A thisModel = getArmorModel(slot);
                 A armorModel = getArmorModel(armorItem.getEquipmentSlot());
-                if (armorModel == thisModel && armorItem.getEquipmentSlot() == slot && mjs$armorItemSet.contains(armorItem)) {
+                if (armorModel == thisModel && armorItem.getEquipmentSlot() == slot && mjs$armorItemSet.contains(armorItem) && isNoShow) {
                     switch (slot) {
                         case HEAD:
                             model.head.visible = false;
