@@ -4,8 +4,14 @@ import com.anningui.modifyjs.util.RayTraceResultMJS;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.latvian.mods.kubejs.typings.Info;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HorseModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.HorseRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +22,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +33,8 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Matrix4f;
+
+import java.util.Optional;
 
 
 @OnlyIn(Dist.CLIENT)
@@ -150,12 +160,41 @@ public class MJSRenderUtils {
                 .setNormal(n, 0, 1, 0);
     }
 
+    @Deprecated
     public static BakedModel getModel(ResourceLocation idPath) {
         return mc.getModelManager().getModel(new ModelResourceLocation(idPath, "standalone"));
     }
 
+    @Deprecated
     public static BakedModel getModel(ResourceLocation idPath, String variant) {
         return mc.getModelManager().getModel(new ModelResourceLocation(idPath, variant));
+    }
+
+    public static BakedModel getJsonModel(ResourceLocation idPath) {
+        return mc.getModelManager().getModel(new ModelResourceLocation(idPath, "standalone"));
+    }
+
+    public static BakedModel getJsonModel(ResourceLocation idPath, String variant) {
+        return mc.getModelManager().getModel(new ModelResourceLocation(idPath, variant));
+    }
+
+    public static <T extends LivingEntity> Optional<EntityModel<T>> getEntityModel(T entity) {
+        if (entity != null) {
+            var renderer = mc.getEntityRenderDispatcher().getRenderer(entity);
+            try {
+                return Optional.of(((LivingEntityRenderer<T, EntityModel<T>>) renderer).getModel());
+            } catch (Exception e) {
+                return Optional.empty();
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<HorseModel<Horse>> getHorseModel(Horse horse) {
+        if (horse != null) {
+            return Optional.of((HorseModel<Horse>) getEntityModel(horse).orElse(null));
+        }
+        return Optional.empty();
     }
 
     public static HumanoidModel<AbstractClientPlayer> getPlayerModel(AbstractClientPlayer player) {
