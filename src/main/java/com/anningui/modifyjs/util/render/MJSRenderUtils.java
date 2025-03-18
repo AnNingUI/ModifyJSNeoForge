@@ -1,6 +1,7 @@
 package com.anningui.modifyjs.util.render;
 
 import com.anningui.modifyjs.util.RayTraceResultMJS;
+import com.anningui.modifyjs.util.js_long.TryCatchPipe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.latvian.mods.kubejs.typings.Info;
@@ -35,6 +36,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Matrix4f;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 
 @OnlyIn(Dist.CLIENT)
@@ -203,6 +205,34 @@ public class MJSRenderUtils {
             return ((PlayerRenderer) renderer).getModel();
         }
         return null;
+    }
+
+    public static <T extends LivingEntity> Optional<HumanoidModel<T>> getHumanoidModel(T entity) {
+        if (entity != null) {
+            var renderer = mc.getEntityRenderDispatcher().getRenderer(entity);
+            try {
+                return Optional.of(((LivingEntityRenderer<T, HumanoidModel<T>>) renderer).getModel());
+            } catch (Exception e) {
+                return Optional.empty();
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static <T extends LivingEntity> boolean isHumanoidModel(T entity) {
+        if (entity != null) {
+            var renderer = mc.getEntityRenderDispatcher().getRenderer(entity);
+            return renderer instanceof LivingEntityRenderer && ((LivingEntityRenderer) renderer).getModel() instanceof HumanoidModel;
+        }
+        return false;
+    }
+
+    public static <T extends LivingEntity> void runOnHumanoidModel(T entity, Consumer<HumanoidModel<T>> consumer) {
+        TryCatchPipe.tryCatchBBV(
+                isHumanoidModel(entity),
+                () -> consumer.accept(getHumanoidModel(entity).orElse(null)),
+                () -> {}
+        );
     }
 
     public static void renderEntityLineIn3D(
