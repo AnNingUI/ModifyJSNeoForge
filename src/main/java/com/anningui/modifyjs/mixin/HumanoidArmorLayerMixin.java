@@ -1,6 +1,6 @@
 package com.anningui.modifyjs.mixin;
 
-import com.anningui.modifyjs.callback.MixinStron;
+import com.anningui.modifyjs.callback.MixinStore;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.anningui.modifyjs.callback.MixinStron.noShowModelMap;
+import static com.anningui.modifyjs.callback.MixinStore.noShowModelMap;
 
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends RenderLayer<T, M> {
@@ -33,8 +33,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void init(RenderLayerParent<T, M> renderer, A innerModel, A outerModel, ModelManager modelManager, CallbackInfo ci) {
-        MixinStron.innerModel = (HumanoidModel<LivingEntity>) innerModel;
-        MixinStron.outerModel = (HumanoidModel<LivingEntity>) outerModel;
+        MixinStore.innerModel = (HumanoidModel<LivingEntity>) innerModel;
+        MixinStore.outerModel = (HumanoidModel<LivingEntity>) outerModel;
         mjs$armorItemSet = new HashSet<>();
     }
 

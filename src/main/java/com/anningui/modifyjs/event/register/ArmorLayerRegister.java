@@ -1,7 +1,7 @@
 package com.anningui.modifyjs.event.register;
 
 import com.anningui.modifyjs.callback.ArmorLayerContext;
-import com.anningui.modifyjs.callback.MixinStron;
+import com.anningui.modifyjs.callback.MixinStore;
 import com.anningui.modifyjs.render.layer.MJSHorseArmorLayer;
 import com.anningui.modifyjs.render.layer.MJSHumanoidArmorLayer;
 import com.anningui.modifyjs.render.layer.MJSRenderLayer;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static com.anningui.modifyjs.callback.MixinStron.noShowModelMap;
+import static com.anningui.modifyjs.callback.MixinStore.noShowModelMap;
 import static com.anningui.modifyjs.event.MJSRenderEvents.ARMOR_LAYER_REGISTER;
 import static java.util.Objects.isNull;
 
@@ -67,12 +67,12 @@ public class ArmorLayerRegister implements KubeStartupEvent {
     }
 
     private static <T extends LivingEntity, M extends HumanoidModel<T>> void addCustomLayers(EntityRenderersEvent.AddLayers event, EntityType<?> entityType,@Nullable LivingEntityRenderer<T, M> renderer, ModelManager modelManager) {
-        if (renderer == null || !MixinStron.isInitialized()
+        if (renderer == null || !MixinStore.isInitialized()
         ) {
             return;
         }
         HumanoidArmorLayer<T, M, ?> bipedArmorLayer = null;
-        for (RenderLayer<T, M> layerRenderer : (List<RenderLayer<T, M>>) (Object) MixinStron.layers) {
+        for (RenderLayer<T, M> layerRenderer : (List<RenderLayer<T, M>>) (Object) MixinStore.layers) {
             //Validate against the layer render being null, as it seems like some mods do stupid things and add in null layers
             if (layerRenderer != null) {
                 //Only allow an exact class match, so we don't add to modded entities that only have a modded extended armor or elytra layer
@@ -98,8 +98,8 @@ public class ArmorLayerRegister implements KubeStartupEvent {
                 renderer.addLayer(
                         new MJSHumanoidArmorLayer<>(
                                 renderer,
-                                (HumanoidModel<T>) MixinStron.innerModel,
-                                (HumanoidModel<T>) MixinStron.outerModel,
+                                (HumanoidModel<T>) MixinStore.innerModel,
+                                (HumanoidModel<T>) MixinStore.outerModel,
                                 modelManager
                         )
                 );
