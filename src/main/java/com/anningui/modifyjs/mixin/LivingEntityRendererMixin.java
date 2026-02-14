@@ -1,6 +1,6 @@
 package com.anningui.modifyjs.mixin;
 
-import com.anningui.modifyjs.callback.MixinStron;
+import com.anningui.modifyjs.callback.MixinStore;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -22,6 +22,6 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
     @Inject(at = @At("HEAD"), method = "addLayer")
     private void onAddCustomLayers(RenderLayer<T, M> layer, CallbackInfoReturnable<Boolean> cir) {
         // 你可以在这里安全地访问 layers
-        MixinStron.layers.add(layer);
+        MixinStore.layers.add(layer);
     }
 }

@@ -1,6 +1,6 @@
 package com.anningui.modifyjs.mixin;
 
-import com.anningui.modifyjs.callback.MixinStron;
+import com.anningui.modifyjs.callback.MixinStore;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -11,6 +11,7 @@ import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.anningui.modifyjs.callback.MixinStron.noShowModelMap;
+import static com.anningui.modifyjs.callback.MixinStore.noShowModelMap;
 
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends RenderLayer<T, M> {
@@ -33,8 +34,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void init(RenderLayerParent<T, M> renderer, A innerModel, A outerModel, ModelManager modelManager, CallbackInfo ci) {
-        MixinStron.innerModel = (HumanoidModel<LivingEntity>) innerModel;
-        MixinStron.outerModel = (HumanoidModel<LivingEntity>) outerModel;
+        MixinStore.innerModel = (HumanoidModel<LivingEntity>) innerModel;
+        MixinStore.outerModel = (HumanoidModel<LivingEntity>) outerModel;
         mjs$armorItemSet = new HashSet<>();
     }
 
@@ -52,20 +53,12 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
             float headPitch,
             CallbackInfo ci
     ) {
-        if (!livingEntity.getItemBySlot(EquipmentSlot.HEAD).isEmpty()){
-            mjs$armorItemSet.add((ArmorItem) livingEntity.getItemBySlot(EquipmentSlot.HEAD).getItem());
-        }
-
-        if (!livingEntity.getItemBySlot(EquipmentSlot.CHEST).isEmpty()) {
-            mjs$armorItemSet.add((ArmorItem) livingEntity.getItemBySlot(EquipmentSlot.CHEST).getItem());
-        }
-
-        if (!livingEntity.getItemBySlot(EquipmentSlot.LEGS).isEmpty()) {
-            mjs$armorItemSet.add((ArmorItem) livingEntity.getItemBySlot(EquipmentSlot.LEGS).getItem());
-        }
-
-        if (!livingEntity.getItemBySlot(EquipmentSlot.FEET).isEmpty()) {
-            mjs$armorItemSet.add((ArmorItem) livingEntity.getItemBySlot(EquipmentSlot.FEET).getItem());
+        mjs$armorItemSet.clear();
+        for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            Item slotItem = livingEntity.getItemBySlot(slot).getItem();
+            if (slotItem instanceof ArmorItem armorItem) {
+                mjs$armorItemSet.add(armorItem);
+            }
         }
     }
 

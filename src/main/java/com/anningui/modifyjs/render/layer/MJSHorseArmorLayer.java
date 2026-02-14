@@ -26,7 +26,7 @@ public class MJSHorseArmorLayer extends HorseArmorLayer {
     @Override
     public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, @NotNull Horse livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         allArmorLayers.forEach((k, v) -> {
-            ArmorItem item = (ArmorItem) k;
+            if (!(k instanceof ArmorItem item)) return;
             EquipmentSlot slot = item.getEquipmentSlot();
             if (item instanceof AnimalArmorItem animalarmoritem && livingEntity.getItemBySlot(slot).getItem() == item && animalarmoritem.getBodyType() == AnimalArmorItem.BodyType.EQUESTRIAN) {
                 v.accept(new ArmorLayerContext(
