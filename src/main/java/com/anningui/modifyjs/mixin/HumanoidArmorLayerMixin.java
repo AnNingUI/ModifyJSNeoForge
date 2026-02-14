@@ -11,6 +11,7 @@ import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -52,20 +53,12 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
             float headPitch,
             CallbackInfo ci
     ) {
-        if (!livingEntity.getItemBySlot(EquipmentSlot.HEAD).isEmpty()){
-            mjs$armorItemSet.add((ArmorItem) livingEntity.getItemBySlot(EquipmentSlot.HEAD).getItem());
-        }
-
-        if (!livingEntity.getItemBySlot(EquipmentSlot.CHEST).isEmpty()) {
-            mjs$armorItemSet.add((ArmorItem) livingEntity.getItemBySlot(EquipmentSlot.CHEST).getItem());
-        }
-
-        if (!livingEntity.getItemBySlot(EquipmentSlot.LEGS).isEmpty()) {
-            mjs$armorItemSet.add((ArmorItem) livingEntity.getItemBySlot(EquipmentSlot.LEGS).getItem());
-        }
-
-        if (!livingEntity.getItemBySlot(EquipmentSlot.FEET).isEmpty()) {
-            mjs$armorItemSet.add((ArmorItem) livingEntity.getItemBySlot(EquipmentSlot.FEET).getItem());
+        mjs$armorItemSet.clear();
+        for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            Item slotItem = livingEntity.getItemBySlot(slot).getItem();
+            if (slotItem instanceof ArmorItem armorItem) {
+                mjs$armorItemSet.add(armorItem);
+            }
         }
     }
 

@@ -27,7 +27,7 @@ public class MJSHumanoidArmorLayer<T extends LivingEntity, M extends HumanoidMod
     @Override
     public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, @NotNull T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         allArmorLayers.forEach((k, v) -> {
-            ArmorItem item = (ArmorItem) k;
+            if (!(k instanceof ArmorItem item)) return;
             EquipmentSlot slot = item.getEquipmentSlot();
             if (!(item instanceof AnimalArmorItem) && livingEntity.getItemBySlot(slot).getItem() == item) {
                 v.accept(new ArmorLayerContext(
